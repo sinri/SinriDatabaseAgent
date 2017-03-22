@@ -1,14 +1,14 @@
 {
-    "name": "sinri/SinriDatabaseAgent",
+    "name": "sinri/sinri-database-agent",
     "description": "Provide a old-style alike quick SQL handler for PHP.",
     "keywords": ["Database","SQL","PHP"],
-    "homepage": "https://github.com/sinri/SinriDatabaseAgent",
+    "homepage": "https://github.com/sinri/sinri-database-agent",
     "license": "MIT",
     "authors": [
         {
             "name": "Sinri Edogawa",
             "email": "e.joshua.s.e@gmail.com",
-            "homepage": "https://github.com/sinri/SinriDatabaseAgent",
+            "homepage": "https://github.com/sinri/sinri-database-agent",
             "role": "Developer"
         }
     ],
