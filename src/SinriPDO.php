@@ -39,7 +39,7 @@ class SinriPDO extends SinriDatabaseAgent
             $this->pdo->query("set names utf8");
             // var_dump($this->pdo->query("SELECT 1")->fetchAll(\PDO::FETCH_ASSOC));
         } catch (\PDOException $e) {
-            throw new Exception("Connect Error: ".$e->getMessage(), 1);
+            throw new \Exception("Connect Error: ".$e->getMessage(), 1);
         }
     }
 

@@ -179,6 +179,7 @@ abstract class TestBase
         if ($rows && count($rows)===2) {
             $this->logInfo("SELECT ROW: ".json_encode($rows, JSON_UNESCAPED_UNICODE));
         } else {
+            $this->logError("GOT ".json_encode($rows, JSON_UNESCAPED_UNICODE));
             $this->logError("SELECT ALL FAILED. Line ".__LINE__);
             $this->logError("ERROR CODE = ".json_encode($this->db->errorCode(), JSON_UNESCAPED_UNICODE));
             $this->logError("ERROR INFO: ".json_encode($this->db->errorInfo(), JSON_UNESCAPED_UNICODE));
@@ -242,7 +243,10 @@ abstract class TestBase
             $this->logError("inTransaction status error");
         }
         $this->logInfo("Deleted Ein with affected rows: ".$result, $sql);
-        $this->db->rollBack();
+        $rollback_done=$this->db->rollBack();
+        if (!$rollback_done) {
+            $this->logError("Rollback Error as returned false");
+        }
         $sql="SELECT count(*) FROM `{$table_name}` WHERE `name`='Ein'";
         $count=$this->db->getOne($sql);
         if ($count==1) {
@@ -263,12 +267,16 @@ abstract class TestBase
         if (!$inTransaction) {
             $this->logError("inTransaction status error");
         }
-        $this->db->commit();
+        $commit_done=$this->db->commit();
+        if (!$commit_done) {
+            $this->logError("Commit Error as return false");
+        }
         $sql="SELECT count(*) FROM `{$table_name}` WHERE `name`='Ein'";
         $count=$this->db->getOne($sql);
-        if ($count===0) {
+        if ($count==0) {
             $this->logInfo("After commit Ein disappeared", $sql);
         } else {
+            $this->logError("GOT ".json_encode($count, JSON_UNESCAPED_UNICODE));
             $this->logError("Commit failed Ein still exists. Line ".__LINE__);
             $this->logError("ERROR CODE = ".json_encode($this->db->errorCode(), JSON_UNESCAPED_UNICODE));
             $this->logError("ERROR INFO: ".json_encode($this->db->errorInfo(), JSON_UNESCAPED_UNICODE));

@@ -29,4 +29,15 @@ class TestDatabaseConfig
             "charset"=>$this->charset,
         ];
     }
+    public function forMySQLi()
+    {
+        return [
+            "host"=>$this->host,
+            "port"=>$this->port,
+            "username"=>$this->username,
+            "password"=>$this->password,
+            "database"=>$this->database,
+            "charset"=>$this->charset,
+        ];
+    }
 }
