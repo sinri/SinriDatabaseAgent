@@ -16,8 +16,8 @@ abstract class TestBase
         $this->config=new TestDatabaseConfig();
         $this->connectDatabase();
 
-        if (!is_a($this->db, 'SinriDatabaseAgent')) {
-            $this->logError("DB Property is not instance of SinriDatabaseAgent");
+        if (!is_subclass_of($this->db, 'sinri\SinriDatabaseAgent\SinriDatabaseAgent')) {
+            $this->logError("DB Property is not instance of SinriDatabaseAgent but of ".get_class($this->db));
         }
 
         $this->prepareCLIColors();

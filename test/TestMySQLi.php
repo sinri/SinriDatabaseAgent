@@ -16,6 +16,6 @@ class TestMySQLi extends TestBase
     protected function connectDatabase()
     {
         $params=$this->config->forMySQLi();
-        $this->db=new SinriMySQLi($params);
+        $this->db=(new SinriMySQLi($params));
     }
 }

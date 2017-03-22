@@ -16,6 +16,6 @@ class TestPDO extends TestBase
     protected function connectDatabase()
     {
         $params=$this->config->forPDO();
-        $this->db=new SinriPDO($params);
+        $this->db=(new SinriPDO($params));
     }
 }

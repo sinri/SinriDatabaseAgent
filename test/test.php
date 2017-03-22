@@ -13,9 +13,15 @@ date_default_timezone_set("Asia/Shanghai");
 // PDO
 echo "---- PDO ----".PHP_EOL;
 $test_pdo=new TestPDO();
-$test_pdo->generalTest();
+if(!$test_pdo->generalTest()){
+    echo "TEST FAILED!".PHP_EOL;
+    die();
+}
 
 // MySQLi
 echo "---- MySQLi ----".PHP_EOL;
 $test_mysqli=new TestMySQLi();
-$test_mysqli->generalTest();
+if(!$test_mysqli->generalTest()){
+    echo "TEST FAILED!".PHP_EOL;
+    die();
+}
