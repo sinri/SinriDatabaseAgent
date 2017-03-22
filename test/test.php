@@ -15,7 +15,7 @@ echo "---- PDO ----".PHP_EOL;
 $test_pdo=new TestPDO();
 if(!$test_pdo->generalTest()){
     echo "TEST FAILED!".PHP_EOL;
-    die();
+    exit(1);
 }
 
 // MySQLi
@@ -23,5 +23,7 @@ echo "---- MySQLi ----".PHP_EOL;
 $test_mysqli=new TestMySQLi();
 if(!$test_mysqli->generalTest()){
     echo "TEST FAILED!".PHP_EOL;
-    die();
+    exit(1);
 }
+
+exit(0);
