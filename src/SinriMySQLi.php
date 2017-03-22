@@ -12,35 +12,29 @@ class SinriMySQLi extends SinriDatabaseAgent
     private $charset;
     private $in_transaction;
 
-    public function __construct($params, &$error = null)
+    public function __construct($params)
     {
-        $error='';
-        try {
-            $this->mysqli=new \mysqli(
-                $params['host'],
-                $params['username'],
-                $params['password'],
-                $params['database'],
-                $params['port']
-            );
-            if ($this->mysqli->connect_errno) {
-                throw new \Exception("SinriMySQLi Connect failed: ".$this->mysqli->connect_error);
-            }
-            // 设置数据库编码
-            if (!isset($params['charset'])) {
-                $this->charset='utf8';
-            } else {
-                $this->charset=$params['charset'];
-            }
-            $this->mysqli->set_charset($this->charset);
+        parent::__construct($params);
 
-            if (!empty($params['database']) && !$this->mysqli->select_db($params['database'])) {
-                throw new \Exception("SinriMySQLi Connect failed: ".$this->mysqli->error);
-            }
-            $this->in_transaction=false;
-        } catch (\Exception $e) {
-            $error=$e->getMessage();
+        $host = $this->readArray($params, 'host', 'no.database');
+        $port = $this->readArray($params, 'port', '3306');
+        $username = $this->readArray($params, 'username', 'Jesus Loves You');
+        $password = $this->readArray($params, 'password', 'God is Love.');
+        $database = $this->readArray($params, 'database', 'test');
+        $charset = $this->readArray($params, 'charset', 'utf8');
+
+        $this->mysqli = new \mysqli($host, $username, $password, $database, $port);
+        if ($this->mysqli->connect_errno) {
+            throw new \Exception("SinriMySQLi Connect failed: " . $this->mysqli->connect_error);
         }
+        // 设置数据库编码
+        $this->charset = $charset;
+        $this->mysqli->set_charset($this->charset);
+
+        if (!empty($params['database']) && !$this->mysqli->select_db($params['database'])) {
+            throw new \Exception("SinriMySQLi Initialize Scheme failed: " . $this->mysqli->error);
+        }
+        $this->in_transaction = false;
     }
 
     public function exportCSV($query, $csv_path, &$error, $charset = 'gbk')
@@ -48,11 +42,10 @@ class SinriMySQLi extends SinriDatabaseAgent
         $error = array();
 
         $csv_file = fopen($csv_path, 'w');
-        // $mysqli = $this->_connect($db);
 
         $sqlIdx = 1;
 
-        $multi_query_done=$this->mysqli->multi_query($query);
+        $multi_query_done = $this->mysqli->multi_query($query);
         if (!$multi_query_done) {
             return false;
         }
@@ -65,7 +58,7 @@ class SinriMySQLi extends SinriDatabaseAgent
             $this->mysqli->close();
             return false;
         }
-        
+
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             fputcsv($csv_file, array_keys($row));
             do {
@@ -99,7 +92,7 @@ class SinriMySQLi extends SinriDatabaseAgent
         if ($this->mysqli->multi_query($query)) {
             do {
                 $affected[] = $this->mysqli->affected_rows;
-                if ($type==0 && $this->mysqli->affected_rows <= 0) {
+                if ($type == 0 && $this->mysqli->affected_rows <= 0) {
                     $error[$sqlIdx] = 'This statement has no effect';
                     $this->mysqli->rollback();
                     $this->mysqli->close();
@@ -112,7 +105,7 @@ class SinriMySQLi extends SinriDatabaseAgent
                 //     $store_result->free();
                 // }
 
-                if ($type==3) {
+                if ($type == 3) {
                     break;
                 }
             } while ($this->mysqli->more_results() && $this->mysqli->next_result() && !$this->mysqli->errno);
@@ -124,7 +117,7 @@ class SinriMySQLi extends SinriDatabaseAgent
             $this->mysqli->close();
             return false;
         }
-    
+
         $this->mysqli->commit();
         $this->mysqli->close();
         return true;
@@ -137,15 +130,15 @@ class SinriMySQLi extends SinriDatabaseAgent
 
     public function getAll($sql)
     {
-        $result=$this->mysqli->query($sql, MYSQLI_USE_RESULT);
+        $result = $this->mysqli->query($sql, MYSQLI_USE_RESULT);
         if (!$result) {
             return [];
         }
-        $rows=[];
+        $rows = [];
         do {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             if ($row) {
-                $rows[]=$row;
+                $rows[] = $row;
             }
         } while ($row);
         $result->free();
@@ -154,15 +147,15 @@ class SinriMySQLi extends SinriDatabaseAgent
 
     public function getCol($sql)
     {
-        $result=$this->mysqli->query($sql, MYSQLI_USE_RESULT);
+        $result = $this->mysqli->query($sql, MYSQLI_USE_RESULT);
         if (!$result) {
             return [];
         }
-        $cols=[];
+        $cols = [];
         do {
             $row = $result->fetch_row();
             if ($row && !empty($row)) {
-                $cols[]=$row[0];
+                $cols[] = $row[0];
             }
         } while ($row);
         $result->free();
@@ -171,7 +164,7 @@ class SinriMySQLi extends SinriDatabaseAgent
 
     public function getRow($sql)
     {
-        $result=$this->mysqli->query($sql, MYSQLI_USE_RESULT);
+        $result = $this->mysqli->query($sql, MYSQLI_USE_RESULT);
         if (!$result) {
             return [];
         }
@@ -182,7 +175,7 @@ class SinriMySQLi extends SinriDatabaseAgent
 
     public function getOne($sql)
     {
-        $result=$this->mysqli->query($sql, MYSQLI_USE_RESULT);
+        $result = $this->mysqli->query($sql, MYSQLI_USE_RESULT);
         if (!$result) {
             return [];
         }
@@ -197,7 +190,7 @@ class SinriMySQLi extends SinriDatabaseAgent
 
     public function exec($sql)
     {
-        $result=$this->mysqli->query($sql);
+        $result = $this->mysqli->query($sql);
         if ($result) {
             return $this->mysqli->affected_rows;
         } else {
@@ -207,7 +200,7 @@ class SinriMySQLi extends SinriDatabaseAgent
 
     public function insert($sql)
     {
-        $result=$this->mysqli->query($sql);
+        $result = $this->mysqli->query($sql);
         if ($result) {
             return $this->mysqli->insert_id;
         } else {
@@ -236,7 +229,6 @@ class SinriMySQLi extends SinriDatabaseAgent
             } else {
                 $result = $this->mysqli->query("COMMIT");
             }
-            // time_nanosleep(0, 500000000);//sleep 0.5 sec
             if ($result) {
                 $this->in_transaction = false;
                 return true;
@@ -253,7 +245,6 @@ class SinriMySQLi extends SinriDatabaseAgent
             } else {
                 $result = $this->mysqli->query("ROLLBACK");
             }
-            // time_nanosleep(0, 500000000);//sleep 0.5 sec
             if ($result) {
                 $this->in_transaction = false;
                 return true;
@@ -277,5 +268,4 @@ class SinriMySQLi extends SinriDatabaseAgent
     {
         return $this->mysqli->error;
     }
-
 }

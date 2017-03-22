@@ -8,9 +8,6 @@ namespace sinri\SinriDatabaseAgent;
  **/
 class SinriPDO extends SinriDatabaseAgent
 {
-
-    // protected $CI;
-
     private $pdo=null;
 
     // We'll use a constructor, as you can't directly call a function
@@ -19,22 +16,18 @@ class SinriPDO extends SinriDatabaseAgent
     {
         parent::__construct();
 
-        $host=$this->readArray($params, 'host', 'no.database.desu');
+        $host=$this->readArray($params, 'host', 'no.database');
         $port=$this->readArray($params, 'port', '3306');
         $username=$this->readArray($params, 'username', 'Jesus Loves You');
         $password=$this->readArray($params, 'password', 'God is Love.');
         $database=$this->readArray($params, 'database', 'test');
         $charset=$this->readArray($params, 'charset', 'utf8');
 
+        $dsn='mysql:host='.$host.';port='.$port.';db'.'name='.$database.';charset='.$charset;
+        $option=array(\PDO::ATTR_EMULATE_PREPARES => false);
         try {
-            $this->pdo = new \PDO(
-                'mysql:host='.$host.';port='.$port.';dbname='.$database.';charset='.$charset,
-                $username,
-                $password,
-                array(\PDO::ATTR_EMULATE_PREPARES => false)
-            );
+            $this->pdo = new \PDO($dsn, $username, $password, $option);
             $this->pdo->query("set names utf8");
-            // var_dump($this->pdo->query("SELECT 1")->fetchAll(\PDO::FETCH_ASSOC));
         } catch (\PDOException $e) {
             throw new \Exception("Connect Error: ".$e->getMessage(), 1);
         }
