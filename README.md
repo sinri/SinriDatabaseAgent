@@ -95,7 +95,10 @@ if($has_error){
 }
 ```
 
-## Code Rule: PSR2 
+## For Developers
+
+* Use Code Rule `PSR2`, just run `./PSR2.sh` before commit and push if `phpcs` and `phpcbf` is correctly installed.
+* Run `php test/test.php` to do Unit Test after correcting `test\config.php` settings.
 
 ### Check
 
