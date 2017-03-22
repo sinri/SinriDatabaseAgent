@@ -277,4 +277,5 @@ class SinriMySQLi extends SinriDatabaseAgent
     {
         return $this->mysqli->error;
     }
+
 }

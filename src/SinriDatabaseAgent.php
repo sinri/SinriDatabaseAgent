@@ -57,4 +57,16 @@ abstract class SinriDatabaseAgent
     // ERROR DEFINITION
     abstract public function errorCode();
     abstract public function errorInfo();
+
+    // Optional
+    public function safeQueryAll($sql, $values = array()){
+        throw new \Exception(__METHOD__." is not implemented yet");
+    }
+    public function safeQueryRow($sql, $values = array()){
+        throw new \Exception(__METHOD__." is not implemented yet");
+    }
+    public function safeQueryOne($sql, $values = array()){
+        throw new \Exception(__METHOD__." is not implemented yet");
+    }
+
 }

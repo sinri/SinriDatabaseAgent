@@ -19,9 +19,6 @@ class SinriPDO extends SinriDatabaseAgent
     {
         parent::__construct();
 
-        // CodeIgniter ONLY: Assign the CodeIgniter super-object
-        // $this->CI =& get_instance();
-
         $host=$this->readArray($params, 'host', 'no.database.desu');
         $port=$this->readArray($params, 'port', '3306');
         $username=$this->readArray($params, 'username', 'Jesus Loves You');
@@ -146,7 +143,7 @@ class SinriPDO extends SinriDatabaseAgent
         return $this->pdo->quote($string, $parameter_type);
     }
 
-    // SPECAIL
+    // SPECIAL
 
     private function logSql($sql, $stmt)
     {
@@ -175,13 +172,5 @@ class SinriPDO extends SinriDatabaseAgent
         $sth->execute($values);
         $col=$sth->fetchColumn(0);
         return $col;
-
-        // 一个比较愚蠢的实现
-        // $row=$sth->fetch(\PDO::FETCH_NUM);
-        // if($row){
-        //     return $row[0];
-        // }else{
-        //     return false;
-        // }
     }
 }
