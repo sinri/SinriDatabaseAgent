@@ -1,6 +1,10 @@
 # SinriDatabaseAgent
 Provide a old-style alike quick SQL handler for PHP
 
+## Composer
+
+    composer require sinri/sinri-database-agent
+
 ## Usage
 
 1. Include the `autoload.php` into your PHP project.
