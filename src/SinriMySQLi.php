@@ -125,4 +125,64 @@ class SinriMySQLi extends SinriDatabaseAgent
         $this->mysqli->close();
         return true;
     }
+
+    public function getAll($sql)
+    {
+        // TODO: Implement getAll() method.
+    }
+
+    public function getCol($sql)
+    {
+        // TODO: Implement getCol() method.
+    }
+
+    public function getRow($sql)
+    {
+        // TODO: Implement getRow() method.
+    }
+
+    public function getOne($sql)
+    {
+        // TODO: Implement getOne() method.
+    }
+
+    public function exec($sql)
+    {
+        // TODO: Implement exec() method.
+    }
+
+    public function insert($sql)
+    {
+        // TODO: Implement insert() method.
+    }
+
+    public function beginTransaction()
+    {
+        // TODO: Implement beginTransaction() method.
+    }
+
+    public function commit()
+    {
+        // TODO: Implement commit() method.
+    }
+
+    public function rollBack()
+    {
+        // TODO: Implement rollBack() method.
+    }
+
+    public function inTransaction()
+    {
+        // TODO: Implement inTransaction() method.
+    }
+
+    public function errorCode()
+    {
+        // TODO: Implement errorCode() method.
+    }
+
+    public function errorInfo()
+    {
+        // TODO: Implement errorInfo() method.
+    }
 }
